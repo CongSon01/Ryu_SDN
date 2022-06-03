@@ -132,13 +132,13 @@ class PortStatistic(app_manager.RyuApp):
                     # graph[src_dpid][dst_dpid]['link_utilization'] = None
                     
                 else:
-                    graph[src_dpid][dst_dpid]['bandwidth'] = 0
+                    graph[src_dpid][dst_dpid]['free_bandwidth'] = 0
                     graph[src_dpid][dst_dpid]['link_usage'] = 0
                     graph[src_dpid][dst_dpid]['src_link_usage'] = 0
                     graph[src_dpid][dst_dpid]['dst_link_usage'] = 0
             return graph
-        except:
-            self.logger.info("Create bw graph exception")
+        except Exception as e:
+            self.logger.info('error', e)
             if self.topology_data is None:
                 self.topology_data = lookup_service_brick(TOPOLOGY_DATA)
             return self.topology_data.graph

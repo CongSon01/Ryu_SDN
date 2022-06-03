@@ -165,6 +165,20 @@ class TopologyData(app_manager.RyuApp):
         links_dict = [link.to_dict() for link in links]
         return hosts_dict, switches_dict, links_dict
     
+    def convert_name_switch(self, int_switch):
+        """
+            convert name int => hex
+        """
+        my_str = '0'
+        comp1 = 'of:'
+        number_zero = 16
+        comp2_int = int(int_switch)
+        comp2_hex = hex(comp2_int).replace('x','0')
+
+        number_zero = comp1 + my_str.zfill( number_zero - len(str(comp2_hex))) + comp2_hex
+
+        return number_zero
+
     def get_link_quality(self):
         """_summary_
             Get link quality data for the REST API
@@ -195,13 +209,13 @@ class TopologyData(app_manager.RyuApp):
                 else: dst_link_usage = 0
                 
                 link_quality.append({
-                    'src.dpid': 'of:0000000000000' + str(hex(src)).replace('x', '0'),
-                    'dst.dpid': 'of:0000000000000' + str(hex(dst)).replace('x', '0'),
+                    'src': self.convert_name_switch(src),
+                    'dst': self.convert_name_switch(dst),
                     'delay': delay * 100000, # ms
-                    'packet_loss': packet_loss,
-                    'link_usage': link_usage * 131072,      #Mbit/s => Byte/s 
-                    'src_link_usage': src_link_usage * 131072,      #Mbit/s => Byte/s 
-                    'dst_link_usage': dst_link_usage * 131072,      #Mbit/s => Byte/s 
-                    'free_bandwidth': free_bandwith
+                    'packetLoss': packet_loss,
+                    'linkUtilization': link_usage * 131072,      #Mbit/s => Byte/s 
+                    'byteSent': src_link_usage * 131072,      #Mbit/s => Byte/s 
+                    'byteReceived': dst_link_usage * 131072,      #Mbit/s => Byte/s 
+                    # 'free_bandwidth': free_bandwith
                 })
         return link_quality

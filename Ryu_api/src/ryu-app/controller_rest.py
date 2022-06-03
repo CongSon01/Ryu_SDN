@@ -64,23 +64,6 @@ class NetworkStatRest(ControllerBase):
     def hello(self, req, **_kwargs):
         body = json.dumps([{'hello': 'world'}])
         return (Response(content_type='application/json', body=body, status=200))
-    
-    # @route(REST_APP, '/hello/{test}', methods=['GET'])
-    # def hello_test(self, req, **_kwargs):
-    #     test = _kwargs['test']
-    #     body = json.dumps([{'hello': test}])
-    #     print(type(test))
-    #     return (Response(content_type='application/json', body=body))
-    
-    # @route(REST_APP, '/json_test', methods=['PUT'])
-    # def json_test(self, req, **_kwargs):
-    #     try:
-    #         content = req.json if req.body else {}
-    #     except ValueError:
-    #         raise Response(status=400)
-    #     # return (Response(content_type='application/json', body=json.dumps(content), status=200))
-    #     print(type(content))      
-    #     return (Response(content_type='application', body=json.dumps(content), status=200))
 
     # network info
     @route(REST_APP, '/onos/test/localTopology/getTopo', methods=['GET'])
@@ -172,7 +155,7 @@ class NetworkStatRest(ControllerBase):
         """
         link_quality = self.app.topology_data.get_link_quality()
         body = json.dumps(link_quality)
-        rq.post('http://10.20.0.209:5000/write_data', json=body)
+        # rq.post('http://10.20.0.209:5000/write_data', json=body)
         return Response(content_type='application/json', body=body, status=200)
         
 # ryu-manager --observe-link --ofp-tcp-listen-port=6633 --wsapi-port=8080 controller_rest.py ryu.app.ofctl_rest ryu.app.simple_switch_13
