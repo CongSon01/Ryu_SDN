@@ -218,7 +218,7 @@ class TopologyData(app_manager.RyuApp):
                     'linkUtilization': link_usage,      #Mbit/s => Byte/s 
                     'byteSent': src_link_usage * 125000,      #Mbit/s => Byte/s 
                     'byteReceived': dst_link_usage * 125000,      #Mbit/s => Byte/s 
-                    'time': time.time() - self.start_time
+                    'time': time.time()
                     # 'free_bandwidth': free_bandwith
                 })
         return link_quality
