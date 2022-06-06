@@ -17,6 +17,7 @@ from setting import TOPOLOGY_DATA, DISCOVER_INTERVAL
 
 # Thread:
 from ryu.lib import hub
+import time
 
 # Graph:
 import networkx as nx
@@ -29,6 +30,7 @@ class TopologyData(app_manager.RyuApp):
         super(TopologyData, self).__init__(*_args, **_kwargs)
         self.name = TOPOLOGY_DATA
         self.topology_api_app = self
+        self.start_time = time.time()
         
         # Threads
         self.discover_thread = hub.spawn(self._discover_thread)
@@ -213,9 +215,10 @@ class TopologyData(app_manager.RyuApp):
                     'dst': self.convert_name_switch(dst),
                     'delay': delay * 100000, # ms
                     'packetLoss': packet_loss,
-                    'linkUtilization': link_usage * 131072,      #Mbit/s => Byte/s 
-                    'byteSent': src_link_usage * 131072,      #Mbit/s => Byte/s 
-                    'byteReceived': dst_link_usage * 131072,      #Mbit/s => Byte/s 
+                    'linkUtilization': link_usage,      #Mbit/s => Byte/s 
+                    'byteSent': src_link_usage * 125000,      #Mbit/s => Byte/s 
+                    'byteReceived': dst_link_usage * 125000,      #Mbit/s => Byte/s 
+                    'time': time.time() - self.start_time
                     # 'free_bandwidth': free_bandwith
                 })
         return link_quality
